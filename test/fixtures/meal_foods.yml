@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  meal_log: one
+  food: one
+  servings: 1.5
+
+two:
+  meal_log: two
+  food: two
+  servings: 1.5

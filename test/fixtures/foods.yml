@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  calories_per_serving: 1
+  protein_grams: 1.5
+  carbs_grams: 1.5
+  fat_grams: 1.5
+  serving_size: MyString
+  food_category: one
+
+two:
+  name: MyString
+  calories_per_serving: 1
+  protein_grams: 1.5
+  carbs_grams: 1.5
+  fat_grams: 1.5
+  serving_size: MyString
+  food_category: two
