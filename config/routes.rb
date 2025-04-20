@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :exercises, only: [:index]
-  resources :foods, only: [:index]
+  resources :exercises, only: [ :index ]
+  resources :foods, only: [ :index ]
 
   get "home", to: "static_pages#home"
   get "about", to: "static_pages#about"
