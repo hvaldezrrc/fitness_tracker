@@ -1,0 +1,21 @@
+<h1><%= @exercise.name %></h1>
+
+<div>
+  <p><strong>Type:</strong> <%= @exercise.exercise_type %></p>
+  <p><strong>Target Muscle:</strong> <%= @exercise.target_muscle %></p>
+  <p><strong>Equipment Needed:</strong> <%= @exercise.equipment_needed %></p>
+  <p><strong>Difficulty:</strong><%= @exercise.difficulty %></p>
+
+  <% if @exercise.image_url.present? %>
+    <p><strong>Demo Image:</strong><br>
+    <img src="<%= @exercise.image_url %>" alt="<%= @exercise.name %>" style="max-width:400px;">
+    </p>
+  <% end %>
+
+  <div>
+    <h3>Instructions:</h3>
+    <p><%= @exercise.instructions %></p>
+  </div>
+</div>
+
+<p><%= link_to "Back to Exercises", exercises_path %></p>

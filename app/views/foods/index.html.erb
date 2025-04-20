@@ -14,7 +14,7 @@
   <tbody>
     <% @foods.each do |food| %>
       <tr>
-        <td><%= food.name %></td>
+        <td><%= link_to food.name, food_path(food) %></td>
         <td><%= food.food_category.name if food.food_category %></td>
         <td><%= food.calories_per_serving %></td>
         <td><%= food.protein_grams %></td>
