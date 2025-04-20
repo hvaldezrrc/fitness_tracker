@@ -1,7 +1,15 @@
 <h1><%= @food.name %></h1>
 
 <div>
-  <p><strong>Category:</strong> <%= @food.food_category.name if @food.food_category %></p>
+  <% if @food.food_category %>
+    <div>
+      <h3>Category: <%= @food.food_category.name %></h3>
+      <p><%= @food.food_category.description %></p>
+    </div>
+  <% else %>
+    <p><strong>Category:</strong> Uncategorized</p>
+  <% end %>
+
   <p><strong>Calories:</strong> <%= @food.calories_per_seving %> per serving</p>
   <p><strong>Serving Size:</strong> <%= @food.serving_size %></p>
 
@@ -12,3 +20,30 @@
 </div>
 
 <p><%= link_to "Back to Foods", foods_path %></p>
+
+<h3>Meal Logs Including this Food</h3>
+<% if @meal.meal_logs.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Meal Type</th>
+        <th>User</th>
+        <th>Servings</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @food.meal_logs.each do |meal_log| %>
+        <% meal_food = meal_log.meal_foods.find_by(food: @food) %>
+        <tr>
+          <td><%= meal_log.date %></td>
+          <td><%= meal_log.meal_type %></td>
+          <td><%= meal_log.user.username %></td>
+          <td><%= meal_food ? meal_food.servings : "N/A" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This food is not included in any meal logs yet.</p>
+<% end %>

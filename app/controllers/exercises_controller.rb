@@ -4,6 +4,6 @@ class ExercisesController < ApplicationController
   end
 
   def show
-    @exercises = Exercise.find(params[:id])
+    @exercises = Exercise.includes(workouts: :user).find(params[:id])
   end
 end

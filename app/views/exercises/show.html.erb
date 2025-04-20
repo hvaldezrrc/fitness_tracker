@@ -19,3 +19,29 @@
 </div>
 
 <p><%= link_to "Back to Exercises", exercises_path %></p>
+
+<h3> Workouts Including this Exercise</h3>
+<% if @exercise.workoiuts.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Workout Name</th>
+        <th>Date</th>
+        <th>Duration</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @exercise.workouts.each do |workout| %>
+        <tr>
+          <td><%= workout.name %></td>
+          <td><%= workout.date %></td>
+          <td><%= workout.duration_minutes %> minutes</td>
+          <td><%= workout.user.username %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>This exercise is not included in any workouts yet.</p>
+<% end %>
