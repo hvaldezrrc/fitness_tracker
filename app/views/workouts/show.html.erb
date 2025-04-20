@@ -31,4 +31,28 @@
   </tbody>
 </table>
 
+<% if @workout.gym %>
+  <div>
+    <h3>Gym Location</h3>
+    <p><strong>Gym:</strong> <%= link_to @workout.gym.name, gym_path(@workout.gym) %></p>
+    <p><strong>Address:</strong> <%= @workout.gym.address %></p>
+
+    <div id="map" style="width: 100%; height: 300px;"></div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var map = L.map('map').setView([<%= @workout.gym.latitude %>, <%= @workout.gym.longitude %>], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([<%= @workout.gym.latitude %>, <%= @workout.gym.longitude %>])
+          .addTo(map)
+          .bindPopup("<strong><%= @workout.gym.name %></strong><br><%= @workout.gym.address %>");
+      });
+    </script>
+  </div>
+<% end %>
+
 <p><%= link_to "Back to #{@workout.user.username}'s Profile", user_path(@workout.user) %></p>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_19_053556) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_20_200329) do
   create_table "exercises", force: :cascade do |t|
     t.string "name"
     t.string "exercise_type"
@@ -41,6 +41,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_19_053556) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["food_category_id"], name: "index_foods_on_food_category_id"
+  end
+
+  create_table "gyms", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.float "latitude"
+    t.float "longitude"
+    t.text "description"
+    t.string "website"
+    t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "meal_foods", force: :cascade do |t|
@@ -106,6 +118,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_19_053556) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "gym_id"
+    t.index ["gym_id"], name: "index_workouts_on_gym_id"
     t.index ["user_id"], name: "index_workouts_on_user_id"
   end
 
@@ -116,5 +130,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_19_053556) do
   add_foreign_key "progress_entries", "users"
   add_foreign_key "workout_exercises", "exercises"
   add_foreign_key "workout_exercises", "workouts"
+  add_foreign_key "workouts", "gyms"
   add_foreign_key "workouts", "users"
 end

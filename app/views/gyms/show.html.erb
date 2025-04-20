@@ -1,0 +1,52 @@
+<h1><%= @gym.name %></h1>
+
+<div id="map" style="width: 100%; height: 400px;"></div>
+
+<div>
+  <p><strong>Address:</strong> <%= @gym.address %></p>
+  <p><strong>Description:</strong> <%= @gym.description %></p>
+  <p><strong>Website:</strong> <a href="<%= @gym.website %>" target="_blank"><%= @gym.website %></a></p>
+  <p><strong>Phone:</strong> <%= @gym.phone %></p>
+</div>
+
+<h2>Recent Workouts at this Gym</h2>
+<% if @workouts.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Workout</th>
+        <th>Date</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @workouts.each do |workout| %>
+        <tr>
+          <td><%= workout.user.username %></td>
+          <td><%= link_to workout.name, workout_path(workout) %></td>
+          <td><%= workout.date %></td>
+          <td><%= workout.duration_minutes %> minutes</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No workouts recorded at this gym yet.</p>
+<% end %>
+
+<p><%= link_to "Back to Gyms", gyms_path %></p>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var map = L.map('map').setView([<%= @gym.latitude %>, <%= @gym.longitude %>], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([<%= @gym.latitude %>, <%= @gym.longitude %>])
+      .addTo(map)
+      .bindPopup("<strong><%= @gym.name %></strong><br><%= @gym.address %>");
+  });
+</script>

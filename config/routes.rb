@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "gyms/index"
+  get "gyms/show"
   # get "workouts/show"
   # get "users/index"
   # get "users/show"
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
   resources :food_categories, only: [ :index, :show ]
   resources :users, only: [ :index, :show ]
   resources :workouts, only: [ :show ]
+  resources :gyms, only: [ :index, :show ]
 
   get "home", to: "static_pages#home"
   get "about", to: "static_pages#about"

@@ -1,0 +1,39 @@
+<h1>Winnipeg Gyms</h1>
+
+<div id="map" style="width: 100%; height: 500px;"></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @gyms.each do |gym| %>
+      <tr>
+        <td><%= link_to gym.name, gym_path(gym) %></td>
+        <td><%= gym.address %></td>
+        <td><%= gym.description %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    if (!document.getElementById("map")) return;
+
+    var map = L.map('map').setView([49.8951, -97.1384], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    <% @gyms.each do |gym| %>
+      L.marker([<%= gym.latitude %>, <%= gym.longitude %>])
+        .addTo(map)
+        .bindPopup("<strong><%= j gym.name %></strong><br><%= j gym.address %><br><a href='<%= gym_path(gym) %>'>View details</a>");
+    <% end %>
+  });
+</script>

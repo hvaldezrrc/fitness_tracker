@@ -1,5 +1,6 @@
 class Workout < ApplicationRecord
   belongs_to :user
+  belongs_to :gym, optional: true
   has_many :workout_exercises, dependent: :destroy
   has_many :exercises, through: :workout_exercises
 

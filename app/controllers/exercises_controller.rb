@@ -1,9 +1,9 @@
 class ExercisesController < ApplicationController
   def index
-    @exercises = Exercise.page(params[:page]).per(10)
+    @exercises = Exercise.page(params[:page]).per(30)
   end
 
   def show
-    @exercises = Exercise.includes(workouts: :user).find(params[:id])
+    @exercise = Exercise.includes(workouts: :user).find(params[:id])
   end
 end

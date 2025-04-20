@@ -51,7 +51,8 @@ end
 puts "Fetching Exercise Data from ExerciseDB API"
 api_key = "666652fbd9msh6ee4cb8b2db61ffp1d224fjsn8749db0d564c"
 
-# Make API call
+puts "Attempting to fetch all exercises..."
+
 uri = URI("https://exercisedb.p.rapidapi.com/exercises")
 request = Net::HTTP::Get.new(uri)
 request["X-RapidAPI-Key"] = api_key
@@ -65,47 +66,71 @@ begin
 
   if response.code == "200"
     exercises_data = JSON.parse(response.body)
-    exercises_data = exercises_data.first(50) # Limit to 50 exercises
-
     puts "Successfully fetched #{exercises_data.length} exercises from API."
 
-    # Create exercises from API data
-    exercises_data.each do |exercise_data|
-      Exercise.create!(
-        name: exercise_data["name"],
-        exercise_type: exercise_data["type"] || "Strength",
-        target_muscle: exercise_data["muscle"] || exercise_data["target"] || "Full Body",
-        equipment_needed: exercise_data["equipment"],
-        difficulty: [ "beginner", "intermediate", "advanced" ].sample,
-        instructions: exercise_data["instructions"] || "Perform the exercise with proper technique.",
-        image_url: exercise_data["gifUrl"] || "https://via.placeholder.com/200x200.png?text=Exercise+Image"
-      )
+    if exercises_data.length <= 10
+      puts "API returned a limited set. Trying to fetch exercises by body part..."
+
+      body_parts = ["back", "cardio", "chest", "lower arms", "lower legs",
+                   "neck", "shoulders", "upper arms", "upper legs", "waist"]
+
+      all_exercises = []
+
+      body_parts.each do |body_part|
+        body_part_uri = URI("https://exercisedb.p.rapidapi.com/exercises/bodyPart/#{URI.encode_www_form_component(body_part)}")
+        body_part_request = Net::HTTP::Get.new(body_part_uri)
+        body_part_request["X-RapidAPI-Key"] = api_key
+        body_part_request["X-RapidAPI-Host"] = "exercisedb.p.rapidapi.com"
+
+        body_part_response = http.request(body_part_request)
+
+        if body_part_response.code == "200"
+          part_exercises = JSON.parse(body_part_response.body)
+          puts "Fetched #{part_exercises.length} exercises for body part: #{body_part}"
+          all_exercises.concat(part_exercises)
+        end
+
+        # Sleep briefly to avoid rate limiting
+        sleep(1)
+      end
+
+      # Remove duplicates based on name
+      all_exercises.uniq! { |ex| ex["name"] }
+      puts "Total unique exercises after fetching by body part: #{all_exercises.length}"
+
+      exercises_data = all_exercises
     end
+
+    # Create exercises from API data
+    created_count = 0
+    exercises_data.each do |exercise_data|
+      begin
+        Exercise.create!(
+          name: exercise_data["name"],
+          exercise_type: exercise_data["type"] || "strength",
+          target_muscle: exercise_data["muscle"] || exercise_data["target"] || "full body",
+          equipment_needed: exercise_data["equipment"],
+          difficulty: ["beginner", "intermediate", "advanced"].sample,
+          instructions: exercise_data["instructions"] || "Perform the exercise with proper technique.",
+          image_url: exercise_data["gifUrl"] || "https://via.placeholder.com/200x200.png?text=Exercise+Image"
+        )
+        created_count += 1
+        puts "Created exercise #{created_count}: #{exercise_data["name"]}" if created_count % 10 == 0
+      rescue => e
+        puts "Error creating exercise '#{exercise_data["name"]}': #{e.message}"
+      end
+    end
+
+    puts "Successfully created #{created_count} exercises from API data."
   else
     puts "API request failed: #{response.code} - #{response.message}"
     raise "API request failed"
   end
 rescue => e
+  # Fallback exercise data generation in case the API fails
   puts "Error fetching exercise data: #{e.message}"
   puts "Using fallback exercise data..."
 
-  # Fallback exercise data
-  exercise_types = [ "Strength", "Cardio", "Flexibility", "Balance" ]
-  muscles = [ "Chest", "Back", "Shoulders", "Legs", "Arms", "Core", "Full Body" ]
-  equipment = [ "Barbell", "Dumbbell", "Machine", "Body Weight", "Kettebell", "Cable", "Resistance Band" ]
-  difficulties = [ "Beginner", "Intermediate", "Advanced" ]
-
-  50.times do
-    Exercise.create!(
-      name: "#{Faker::Adjective.positive} #{muscles.sample.capitalize} #{Faker::Lorem.word}",
-      exercise_type: exercise_types.sample,
-      target_muscle: muscles.sample,
-      equipment_needed: equipment.sample,
-      difficulty: difficulties.sample,
-      instructions: "Perform the exercise with proper technique.",
-      image_url: "https://via.placeholder.com/200x200.png?text=Exercise+Image"
-    )
-  end
 end
 
 puts "Importing food data from Foundations Food CSV..."
@@ -114,33 +139,83 @@ puts "Importing food data from Foundations Food CSV..."
 csv_path = Rails.root.join('food.csv')
 
 if File.exist?(csv_path)
-  food_category_cache = {}
   processed_foods = 0
+  categories = FoodCategory.all.to_a
+
+  used_names = Set.new
+
+  skip_counter = 0
+  skip_increment = 500
 
   CSV.foreach(csv_path, headers: true) do |row|
+    skip_counter += 1
+    next if skip_counter % skip_increment != 0
+
     break if processed_foods >= 100
 
     begin
-      category_id = row['food_category_id'].to_i
+      name = row['description'].to_s.strip
 
-      unless food_category_cache[category_id]
-        food_category_cache[category_id] = FoodCategory.all.sample
-      end
+      next if name.empty? || used_names.include?(name.downcase) || name.upcase.include?("HUMMUS")
+
+      used_names.add(name.downcase)
+
+      category = categories[processed_foods % categories.length]
 
       food = Food.create!(
-        name: row['description'],
+        name: name,
         calories_per_serving: rand(50..500),
         protein_grams: rand(0.0..30.0).round(1),
         carbs_grams: rand(0.0..50.0).round(1),
         fat_grams: rand(0.0..20.0).round(1),
         serving_size: "100g",
-        food_category: food_category_cache[category_id]
+        food_category: category
       )
 
       processed_foods += 1
-      puts "Processed food: #{food.name}" if processed_foods % 10 == 0
+      puts "Processed food: #{food.name} (Category: #{category.name})" if processed_foods % 10 == 0
     rescue => e
       puts "Error importing food: #{e.message}"
+    end
+  end
+
+  if processed_foods < 100
+    remaining = 100 - processed_foods
+    puts "Only found #{processed_foods} unique foods in CSV. Adding #{remaining} predefined foods..."
+
+    category_foods = {
+      "Fruits" => ["Apple", "Banana", "Orange", "Strawberry", "Blueberry", "Raspberry", "Watermelon", "Pineapple", "Mango", "Peach"],
+      "Vegetables" => ["Carrot", "Broccoli", "Spinach", "Kale", "Cucumber", "Tomato", "Bell Pepper", "Onion", "Garlic", "Potato"],
+      "Grains" => ["Brown Rice", "White Rice", "Quinoa", "Oats", "Barley", "Whole Wheat Bread", "Pasta", "Couscous", "Bulgur", "Rye Bread"],
+      "Protein" => ["Chicken Breast", "Ground Beef", "Salmon", "Tuna", "Eggs", "Tofu", "Tempeh", "Black Beans", "Chickpeas", "Lentils"],
+      "Dairy" => ["Milk", "Yogurt", "Cheddar Cheese", "Mozzarella", "Cottage Cheese", "Greek Yogurt", "Butter", "Ice Cream", "Cream Cheese", "Sour Cream"],
+      "Oils & Fats" => ["Olive Oil", "Coconut Oil", "Avocado Oil", "Vegetable Oil", "Butter", "Ghee", "Lard", "Tallow", "Walnut Oil", "Sesame Oil"],
+      "Beverages" => ["Coffee", "Tea", "Orange Juice", "Apple Juice", "Smoothie", "Water", "Sparkling Water", "Kombucha", "Lemonade", "Soda"],
+      "Sweets & Desserts" => ["Chocolate Cake", "Ice Cream", "Cookie", "Brownie", "Pie", "Cupcake", "Donut", "Chocolate Bar", "Candy", "Cheesecake"]
+    }
+
+    current_category_index = processed_foods % categories.length
+    (0...remaining).each do |i|
+      category = categories[current_category_index]
+      current_category_index = (current_category_index + 1) % categories.length
+
+      foods_list = category_foods[category.name] || []
+      food_name = foods_list[i % foods_list.length]
+
+      food_name = "#{Faker::Adjective.positive} #{food_name}" if used_names.include?(food_name.downcase)
+      used_names.add(food_name.downcase)
+
+      Food.create!(
+        name: food_name,
+        calories_per_serving: rand(50..500),
+        protein_grams: rand(0.0..30.0).round(1),
+        carbs_grams: rand(0.0..50.0).round(1),
+        fat_grams: rand(0.0..20.0).round(1),
+        serving_size: ["1 cup", "100g", "1 tbsp", "1 oz", "1 serving"].sample,
+        food_category: category
+      )
+
+      processed_foods += 1
     end
   end
 else
@@ -237,6 +312,67 @@ User.all.each do |user|
   end
 end
 
+# Create gyms in Winnipeg
+winnipeg_gyms = [
+  {
+    name: "Altea Active",
+    address: "100 S Town Rd, Winnipeg, MB R3Y 0V8",
+    latitude: 49.8070,
+    longitude: -97.1953,
+    description: "Premium fitness club with extensive amenities including pools, courts, and diverse fitness classes.",
+    website: "https://www.alteaactive.com",
+    phone: "(204) 808-7082"
+  },
+  {
+    name: "GoodLife Refinery",
+    address: "300 Newmarket Blvd, Winnipeg, MB R3T 6G7",
+    latitude: 49.8071,
+    longitude: -97.1594,
+    description: "Full-service fitness center with cardio and strength equipment, plus group classes.",
+    website: "https://www.goodlifefitness.com",
+    phone: "(204) 786-3942"
+  },
+  {
+    name: "GoodLife Grant",
+    address: "1120 Grant Ave, Winnipeg, MB R3M 2A6",
+    latitude: 49.8566,
+    longitude: -97.1767,
+    description: "Popular gym offering a range of cardio machines, free weights, and group fitness classes.",
+    website: "https://www.goodlifefitness.com",
+    phone: "(204) 488-0816"
+  },
+  {
+    name: "Fit4Less",
+    address: "1225 St Mary's Rd, Winnipeg, MB R2M 5E5",
+    latitude: 49.8235,
+    longitude: -97.1125,
+    description: "Budget-friendly gym with quality equipment at affordable rates.",
+    website: "https://www.fit4less.ca",
+    phone: "(204) 504-5333"
+  },
+  {
+    name: "Crunch Fitness",
+    address: "143 Nature Park Way, Winnipeg, MB R3P 0Y6",
+    latitude: 49.8319,
+    longitude: -97.1917,
+    description: "Fitness center known for its 'No Judgments' philosophy and diverse equipment offerings.",
+    website: "https://www.crunchfitness.com",
+    phone: "(204) 615-1010"
+  }
+]
+
+puts "Creating Winnipeg gyms..."
+winnipeg_gyms.each do |gym_data|
+  Gym.create!(gym_data)
+end
+
+if Workout.any? && Gym.any?
+  puts "Associating workouts with gyms..."
+  Workout.all.sample(Workout.count / 2).each do |workout|
+    workout.update(gym: Gym.all.sample)
+  end
+end
+
 # Count rows in each table for verification
 puts "\nSeeding complete!"
 puts "Generated the following records:"
@@ -250,3 +386,4 @@ puts "Meal Logs: #{MealLog.count}"
 puts "Meal Foods: #{MealFood.count}"
 puts "Progress Entries: #{ProgressEntry.count}"
 puts "Total rows: #{User.count + Exercise.count + FoodCategory.count + Food.count + Workout.count + WorkoutExercise.count + MealLog.count + MealFood.count + ProgressEntry.count}"
+puts "Gyms: #{Gym.count}"

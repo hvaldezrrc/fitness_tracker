@@ -1,0 +1,5 @@
+class AddGymToWorkouts < ActiveRecord::Migration[8.0]
+  def change
+    add_reference :workouts, :gym, foreign_key: true
+  end
+end
