@@ -1,0 +1,29 @@
+<h1><%= @food_category.name %></h1>>
+<p><%= @food_category.description %></p>
+
+<h2>Foods in this Category</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Calories</th>
+      <th>Protein (g)</th>
+      <th>Carbs (g)</th>
+      <th>Fats (g)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @foods.each do |food| %>
+      <tr>
+        <td><%= link_to food.name, food_path(food) %></td>
+        <td><%= food.calories_per_serving %></td>
+        <td><%= food.protein_grams %></td>
+        <td><%= food.carbs_grams %></td>
+        <td><%= food.fat_grams %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "Back to Categories", food_categories_path %></p>

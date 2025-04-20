@@ -1,0 +1,34 @@
+<h1><%= @workout.name %></h1>
+
+<div>
+  <p><strong>User:</strong> <%= link_to @workout.user.username, user_path(@workout.user) %></p>
+  <p><strong>Date:</strong> <%= @workout.date %></p>
+  <p><strong>Duration:</strong> <%= @workout.duration_minutes %> minutes</p>
+  <p><strong>Notes:</strong> <%= @workout.notes %></p>
+</div>
+
+<h2>Exercises in this Workout</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th>Sets</th>
+      <th>Reps</th>
+      <th>Weight (kg)</th>
+      <th>Duration (min)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @workout.workout_exercises.each do |workout_exercise| %>
+      <tr>
+        <td><%= link_to workout_exercise.exercise.name, exercise_path(workout_exercise.exercise) %></td>
+        <td><%= workout_exercise.sets %></td>
+        <td><%= workout_exercise.reps %></td>
+        <td><%= workout_exercise.weight_kg %></td>
+        <td><%= workout_exercise.duration_minutes %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "Back to #{@workout.user.username}'s Profile", user_path(@workout.user) %></p>

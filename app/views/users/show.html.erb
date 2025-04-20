@@ -1,0 +1,61 @@
+<h1><%= @user.username %></h1>
+
+<div>
+  <p><strong>Age:</strong> <%= @user.age %></p>
+  <p><strong>Height:</strong> <%= @user.height_cm %> cm</p>
+  <p><strong>Weight:</strong> <%= @user.weight_kg %> kg</p>
+  <p><strong>Fitness Level:</strong> <%= @user.fitness_level %></p>
+  <p><strong>Goal:</strong> <%= @user.goal %></p>
+</div>
+
+<h2>Workouts</h2>
+<% if @workouts.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Duration</th>
+        <th>Exercises</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @workouts.each do |workout| %>
+        <tr>
+          <td><%= link_to workout.name, workout_path(workout) %></td>
+          <td><%= workout.date %></td>
+          <td><%= workout.duration_minutes %> minutes</td>
+          <td><%= workout.exercises.count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No workouts recorded yet.</p>
+<% end %>
+
+<h2>Meal Logs</h2>
+<% if @meal_logs.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Meal Type</th>
+        <th>Foods</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @meal_logs.each do |meal_log| %>
+        <tr>
+          <td><%= meal_log.date %></td>
+          <td><%= meal_log.meal_type %></td>
+          <td><%= meal_log.foods.count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No meal logs recorded yet.</p>
+<% end %>
+
+<p><%= link_to "Back to Users", users_path %></p>

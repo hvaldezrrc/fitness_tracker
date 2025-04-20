@@ -3,7 +3,7 @@
 <div>
   <% if @food.food_category %>
     <div>
-      <h3>Category: <%= @food.food_category.name %></h3>
+      <h3>Category: <%= @food.food_category.name, food_category_path(@food.food_category) %></h3>
       <p><%= @food.food_category.description %></p>
     </div>
   <% else %>

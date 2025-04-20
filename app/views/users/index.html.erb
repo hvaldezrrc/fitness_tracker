@@ -1,0 +1,22 @@
+<h1>Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Fitness Level</th>
+      <th>Workouts</th>
+      <th>Meal Logs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.username, user_path(user) %></td>
+        <td><%= user.fitness_level %></td>
+        <td><%= user.workouts.count %></td>
+        <td><%= user.meal_logs.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

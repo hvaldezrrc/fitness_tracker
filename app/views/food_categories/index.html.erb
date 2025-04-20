@@ -1,0 +1,20 @@
+<h1>Food Categories</h1>>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Description</th>
+      <th>Number of Foods</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @food_categories.each do |category| %>
+      <tr>
+        <td><%= link_to category.name, food_category_path(category) %></td>
+        <td><%= category.description %></td>
+        <td><%= category.foods.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
