@@ -4,6 +4,6 @@ class FoodsController < ApplicationController
   end
 
   def show
-    @foods = Food.includes(:food_category, meal_logs: [:user, :meal_foods]).find(params[:id])
+    @foods = Food.includes(:food_category, meal_logs: [ :user, :meal_foods ]).find(params[:id])
   end
 end
