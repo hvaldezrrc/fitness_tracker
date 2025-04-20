@@ -1,0 +1,26 @@
+<h1>Foods</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Calories</th>
+      <th>Protein (g)</th>
+      <th>Carbs (g)</th>
+      <th>Fat (g)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @foods.each do |food| %>
+      <tr>
+        <td><%= food.name %></td>
+        <td><%= food.food_category.name if food.food_category %></td>
+        <td><%= food.calories_per_serving %></td>
+        <td><%= food.protein_grams %></td>
+        <td><%= food.carbs_grams %></td>
+        <td><%= food.fat_grams %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

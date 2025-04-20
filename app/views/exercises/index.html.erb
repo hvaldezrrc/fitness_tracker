@@ -1,0 +1,24 @@
+<h1>Exercises Index</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Target Muscle</th>
+      <th>Equipment</th>
+      <th>Difficulty</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exercises.each do |exercise| %>
+      <tr>
+        <td><%= exercise.name %></td>
+        <td><%= exercise.exercise_type %></td>
+        <td><%= exercise.target_muscle %></td>
+        <td><%= exercise.equipment_needed %></td>
+        <td><%= exercise.difficulty %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
