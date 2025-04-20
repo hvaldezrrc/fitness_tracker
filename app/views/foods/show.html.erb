@@ -3,26 +3,26 @@
 <div>
   <% if @food.food_category %>
     <div>
-      <h3>Category: <%= @food.food_category.name, food_category_path(@food.food_category) %></h3>
+      <h3>Category: <%= link_to @food.food_category.name, food_category_path(@food.food_category) %></h3>
       <p><%= @food.food_category.description %></p>
     </div>
   <% else %>
     <p><strong>Category:</strong> Uncategorized</p>
   <% end %>
 
-  <p><strong>Calories:</strong> <%= @food.calories_per_seving %> per serving</p>
+  <p><strong>Calories:</strong> <%= @food.calories_per_serving %> per serving</p>
   <p><strong>Serving Size:</strong> <%= @food.serving_size %></p>
 
   <h3>Nutritional Information</h3>
   <p><strong>Protein:</strong> <%= @food.protein_grams %> g</p>
-  <p><strong>Carbohydrates</strong> <%= @food.carbs_grams %> g</p>
+  <p><strong>Carbohydrates:</strong> <%= @food.carbs_grams %> g</p>
   <p><strong>Fat:</strong> <%= @food.fat_grams %> g</p>
 </div>
 
 <p><%= link_to "Back to Foods", foods_path %></p>
 
 <h3>Meal Logs Including this Food</h3>
-<% if @meal.meal_logs.any? %>
+<% if @food.meal_logs.any? %>
   <table>
     <thead>
       <tr>
