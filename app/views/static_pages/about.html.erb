@@ -1,0 +1,111 @@
+<h1>About Fitness Tracker</h1>
+
+<section>
+  <h2>Project Overview</h2>
+  <p>
+    Fitness Tracker is a web application designed to help users track their workouts, monitor nutritional
+    intake, and track progress toward their fitness goals. Users can browse exercises, log workouts,
+    record meals, and track their weight and other metrics over time.
+  </p>
+</section>
+
+<section>
+  <h2>Data Sources</h2>
+
+  <div>
+    <h3>ExerciseDB API</h3>
+    <p>Exercise data is sourced from the ExerciseDB API, which provides comprehensive information about various exercises including:</p>
+    <ul>
+      <li>Exercise name</li>
+      <li>Exercise type (strength, cardio, flexibility, etc.)</li>
+      <li>Target muscle group</li>
+      <li>Required equipment</li>
+      <li>Difficulty level</li>
+      <li>Instructions</li>
+      <li>Demo image/GIF URL</li>
+    </ul>
+    <p>
+      <strong>Source:</strong>
+      <a href="https://rapidapi.com/justin-WFnsXH_t6/api/exercisedb" target="_blank">
+        ExerciseDB API on RapidAPI
+      </a>
+    </p>
+  </div>
+
+  <div>
+    <h3>Foundation Foods CSV</h3>
+    <p>Nutritional information is imported from the USDA Foundation Foods dataset, which includes:</p>
+    <ul>
+      <li>Food item name</li>
+      <li>Calorie content per serving</li>
+      <li>Protein content (grams)</li>
+      <li>Carbohydrate content (grams)</li>
+      <li>Fat content (grams)</li>
+      <li>Serving size information</li>
+      <li>Food category</li>
+    </ul>
+    <p>
+      <strong>Source:</strong>
+      <a href="https://fdc.nal.usda.gov/download-datasets" target="_blank">
+        USDA FoodData Central
+      </a>
+    </p>
+  </div>
+
+  <div>
+    <h3>Faker Gem</h3>
+    <p>Generated user and workout data including:</p>
+    <ul>
+      <li>User profiles (name, age, height, weight, fitness level)</li>
+      <li>Workout logs (date, duration, exercises performed)</li>
+      <li>User fitness goals and progress tracking</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Database Structure</h2>
+  <p>The application utilizes the following database tables:</p>
+  <ul>
+    <li><strong>users</strong> - User profiles and details</li>
+    <li><strong>exercises</strong> - Exercise information and instructions</li>
+    <li><strong>workouts</strong> - Workout plans and logs</li>
+    <li><strong>workout_exercises</strong> - Join table connecting workouts and exercises</li>
+    <li><strong>foods</strong> - Nutritional information for food items</li>
+    <li><strong>food_categories</strong> - Categories for organizing food items</li>
+    <li><strong>meal_logs</strong> - User's food consumption records</li>
+    <li><strong>meal_foods</strong> - Join table connecting meals and foods</li>
+    <li><strong>progress_entries</strong> - User's progress tracking data</li>
+  </ul>
+
+  <div>
+    <h3>Entity Relationship Diagram</h3>
+    <img src="<%= asset_path('fitness_tracker_erd.jpeg') %>" alt="Fitness Tracker ERD" style="max-width: 100%;">
+  </div>
+</section>
+
+<section>
+  <h2>Data Integration Plan</h2>
+
+  <h4>Importing Exercise Data:</h4>
+  <ul>
+    <li>Pull exercise information from the ExerciseDB API</li>
+    <li>Create records in the exercises table</li>
+    <li>Categorize exercises by type and target muscle</li>
+  </ul>
+
+  <h4>Importing Nutritional Data:</h4>
+  <ul>
+    <li>Import food data from the CSV</li>
+    <li>Create records in the foods table</li>
+    <li>Categorize foods and create appropriate associations</li>
+  </ul>
+
+  <h4>Creating User and Workout Data:</h4>
+  <ul>
+    <li>Generate fake user profiles with Faker gem</li>
+    <li>Create sample workout routines and logs</li>
+    <li>Associate workouts with exercises through the join table</li>
+    <li>Generate meal logs and associate them with foods and users</li>
+  </ul>
+</section>

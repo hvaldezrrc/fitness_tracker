@@ -4,5 +4,5 @@ class MealLog < ApplicationRecord
   has_many :foods, through: :meal_foods
 
   validates :date, presence: true
-  validates :meal_type, inclusion: { in: %w(breakfast lunch dinner snack other) }
+  validates :meal_type, inclusion: { in: %w[breakfast lunch dinner snack other] }
 end

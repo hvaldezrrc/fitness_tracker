@@ -23,6 +23,19 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <nav>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; background-color: #f8f9fa; padding: 1rem;">
+          <li style="margin-right: 2rem;"><%= link_to "Home", home_path %></li>
+          <li style="margin-right: 2rem;"><%= link_to "About", about_path %></li>
+          <li style="margin-right: 2rem;"><%= link_to "Exercises", "#" %></li>
+          <li style="margin-right: 2rem;"><%= link_to "Foods", "#" %></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div style="padding: 1rem;">
+      <%= yield %>
+    </div>
   </body>
 </html>

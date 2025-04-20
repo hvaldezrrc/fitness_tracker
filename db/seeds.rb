@@ -42,7 +42,7 @@ puts "Creating Users with Faker"
     age: Faker::Number.between(from: 16, to: 75),
     height_cm: Faker::Number.between(from: 150, to: 200),
     weight_kg: Faker::Number.between(from: 45, to: 120),
-    fitness_level: ["beginner", "intermediate", "advanced"].sample,
+    fitness_level: [ "beginner", "intermediate", "advanced" ].sample,
     goal: Faker::Lorem.paragraph(sentence_count: 2)
   )
 end
@@ -76,7 +76,7 @@ begin
         exercise_type: exercise_data["type"] || "Strength",
         target_muscle: exercise_data["muscle"] || exercise_data["target"] || "Full Body",
         equipment_needed: exercise_data["equipment"],
-        difficulty: ["beginner", "intermediate", "advanced"].sample,
+        difficulty: [ "beginner", "intermediate", "advanced" ].sample,
         instructions: exercise_data["instructions"] || "Perform the exercise with proper technique.",
         image_url: exercise_data["gifUrl"] || "https://via.placeholder.com/200x200.png?text=Exercise+Image"
       )
@@ -90,10 +90,10 @@ rescue => e
   puts "Using fallback exercise data..."
 
   # Fallback exercise data
-  exercise_types = ["Strength", "Cardio", "Flexibility", "Balance"]
-  muscles = ["Chest", "Back", "Shoulders", "Legs", "Arms", "Core", "Full Body"]
-  equipment = ["Barbell", "Dumbbell", "Machine", "Body Weight", "Kettebell", "Cable", "Resistance Band"]
-  difficulties = ["Beginner", "Intermediate", "Advanced"]
+  exercise_types = [ "Strength", "Cardio", "Flexibility", "Balance" ]
+  muscles = [ "Chest", "Back", "Shoulders", "Legs", "Arms", "Core", "Full Body" ]
+  equipment = [ "Barbell", "Dumbbell", "Machine", "Body Weight", "Kettebell", "Cable", "Resistance Band" ]
+  difficulties = [ "Beginner", "Intermediate", "Advanced" ]
 
   50.times do
     Exercise.create!(
@@ -155,7 +155,7 @@ else
       protein_grams: Faker::Number.decimal(l_digits: 1, r_digits: 1),
       carbs_grams: Faker::Number.decimal(l_digits: 1, r_digits: 1),
       fat_grams: Faker::Number.decimal(l_digits: 1, r_digits: 1),
-      serving_size: ["1 cup", "100g", "1 tbsp", "1 oz", "1 serving"].sample,
+      serving_size: [ "1 cup", "100g", "1 tbsp", "1 oz", "1 serving" ].sample,
       food_category: category
     )
   end
@@ -166,9 +166,9 @@ User.all.each do |user|
   # Each user gets 2-6 workouts
   (2..6).to_a.sample.times do
     workout = user.workouts.create!(
-      name: ["Morning Workout", "Cardio Day", "Strength Training", "Full Body", "Upper Body", "Lower Body"].sample,
+      name: [ "Morning Workout", "Cardio Day", "Strength Training", "Full Body", "Upper Body", "Lower Body" ].sample,
       date: Faker::Date.between(from: 30.days.ago, to: Date.today),
-      duration_minutes: [30, 45, 60, 90].sample,
+      duration_minutes: [ 30, 45, 60, 90 ].sample,
       notes: Faker::Lorem.paragraph(sentence_count: 2)
     )
 
@@ -203,7 +203,7 @@ User.all.each do |user|
   (3..7).to_a.sample.times do
     meal_log = user.meal_logs.create!(
       date: Faker::Date.between(from: 14.days.ago, to: Date.today),
-      meal_type: ["breakfast", "lunch", "dinner", "snack", "other"].sample,
+      meal_type: [ "breakfast", "lunch", "dinner", "snack", "other" ].sample,
       notes: Faker::Lorem.sentence
     )
 
@@ -213,7 +213,7 @@ User.all.each do |user|
     foods.each do |food|
       meal_log.meal_foods.create!(
         food: food,
-        servings: [0.5, 1, 1.5, 2].sample
+        servings: [ 0.5, 1, 1.5, 2 ].sample
       )
     end
   end
@@ -232,7 +232,7 @@ User.all.each do |user|
     user.progress_entries.create!(
       date: date,
       weight_kg: user.weight_kg + weight_variation,
-      notes: ["Feeling good", "Tired today", "Great energy", "Need more sleep", "Stressed", "Motivated"].sample
+      notes: [ "Feeling good", "Tired today", "Great energy", "Need more sleep", "Stressed", "Motivated" ].sample
     )
   end
 end
