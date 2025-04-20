@@ -25,5 +25,7 @@
     <% end %>
   </tbody>
 </table>
-
+<div>
+  <%= paginate @foods %>
+</div>
 <p><%= link_to "Back to Categories", food_categories_path %></p>

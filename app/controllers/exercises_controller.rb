@@ -1,6 +1,6 @@
 class ExercisesController < ApplicationController
   def index
-    @exercises = Exercise.all
+    @exercises = Exercise.page(params[:page]).per(10)
   end
 
   def show

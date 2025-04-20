@@ -30,6 +30,9 @@
       <% end %>
     </tbody>
   </table>
+<div>
+  <%= paginate @workouts, param_name: :page %>
+</div>
 <% else %>
   <p>No workouts recorded yet.</p>
 <% end %>
@@ -54,6 +57,9 @@
       <% end %>
     </tbody>
   </table>
+<div>
+  <%= paginate @meal_logs, param_name: :meal_page %>
+</div>
 <% else %>
   <p>No meal logs recorded yet.</p>
 <% end %>
