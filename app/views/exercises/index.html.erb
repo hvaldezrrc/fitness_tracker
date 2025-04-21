@@ -1,9 +1,24 @@
 <h1>Exercises Index</h1>
 
+<div class="search-form">
+  <%= form_with(url: exercises_path, method: :get, local: true) do |form| %>
+    <%= form.text_field :search, placeholder: "Search by name, muscle group or type...", value: params[:search] %>
+    <%= form.submit "Search" %>
+  <% end %>
+</div>
+
+<% if params[:search].present? %>
+  <p>
+    Showing results for: <strong><%= params[:search] %></strong>
+    <%= link_to "Clear search", exercises_path %>
+  </p>
+<% end %>
+
 <table>
   <thead>
     <tr>
       <th>Name</th>
+      <th>Image</th>
       <th>Type</th>
       <th>Target Muscle</th>
       <th>Equipment</th>
@@ -11,15 +26,30 @@
     </tr>
   </thead>
   <tbody>
-    <% @exercises.each do |exercise| %>
-      <tr>
-        <td><%= link_to exercise.name, exercise_path(exercise) %></td>
-        <td><%= exercise.exercise_type %></td>
-        <td><%= exercise.target_muscle %></td>
-        <td><%= exercise.equipment_needed %></td>
-        <td><%= exercise.difficulty %></td>
-      </tr>
-    <% end %>
+  <% @exercises.each do |exercise| %>
+    <tr>
+      <td><%= link_to exercise.name, exercise_path(exercise) %></td>
+      <td>
+        <% if exercise.image_url.present? %>
+          <% if exercise.image_url.include?("exercisedb.io") %>
+            <%= image_tag exercise.image_url, alt: exercise.name, style: "max-width: 100px;", crossorigin: "anonymous", referrerpolicy: "no-referrer" %>
+          <% elsif exercise.image_url.include?("via.placeholder.com") %>
+            <%= image_tag exercise.image_url, alt: exercise.name, style: "max-width: 100px;" %>
+          <% else %>
+            <%= image_tag exercise.image_url, alt: exercise.name, style: "max-width: 100px;", onerror: "this.onerror=null;this.src='https://via.placeholder.com/200x200.png?text=Exercise+Image';" %>
+          <% end %>
+        <% else %>
+          <div style="width: 100px; height: 100px; background-color: #eee; display: flex; align-items: center; justify-content: center;">
+            No Image
+          </div>
+        <% end %>
+      </td>
+      <td><%= exercise.exercise_type %></td>
+      <td><%= exercise.target_muscle %></td>
+      <td><%= exercise.equipment_needed %></td>
+      <td><%= exercise.difficulty %></td>
+    </tr>
+  <% end %>
   </tbody>
 </table>
 <div>

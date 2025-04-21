@@ -1,5 +1,19 @@
 <h1>Foods</h1>
 
+<div class="search-form">
+  <%= form_with(url: foods_path, method: :get, local: true) do |form| %>
+    <%= form.text_field :search, placeholder: "Search foods by name...", value: params[:search] %>
+    <%= form.submit "Search" %>
+  <% end %>
+</div>
+
+<% if params[:search].present? %>
+  <p>
+    Showing results for: <strong><%= params[:search] %></strong>
+    <%= link_to "Clear search", foods_path %>
+  </p>
+<% end %>
+
 <table>
   <thead>
     <tr>
