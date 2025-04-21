@@ -9,7 +9,7 @@ class FoodsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = "Food not found"
       redirect_to foods_path
-      return
+      nil
     end
   end
 end

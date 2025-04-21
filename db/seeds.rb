@@ -71,8 +71,8 @@ begin
     if exercises_data.length <= 10
       puts "API returned a limited set. Trying to fetch exercises by body part..."
 
-      body_parts = ["back", "cardio", "chest", "lower arms", "lower legs",
-                   "neck", "shoulders", "upper arms", "upper legs", "waist"]
+      body_parts = [ "back", "cardio", "chest", "lower arms", "lower legs",
+                   "neck", "shoulders", "upper arms", "upper legs", "waist" ]
 
       all_exercises = []
 
@@ -110,7 +110,7 @@ begin
           exercise_type: exercise_data["type"] || "strength",
           target_muscle: exercise_data["muscle"] || exercise_data["target"] || "full body",
           equipment_needed: exercise_data["equipment"],
-          difficulty: ["beginner", "intermediate", "advanced"].sample,
+          difficulty: [ "beginner", "intermediate", "advanced" ].sample,
           instructions: exercise_data["instructions"] || "Perform the exercise with proper technique.",
           image_url: exercise_data["gifUrl"] || "https://via.placeholder.com/200x200.png?text=Exercise+Image"
         )
@@ -184,14 +184,14 @@ if File.exist?(csv_path)
     puts "Only found #{processed_foods} unique foods in CSV. Adding #{remaining} predefined foods..."
 
     category_foods = {
-      "Fruits" => ["Apple", "Banana", "Orange", "Strawberry", "Blueberry", "Raspberry", "Watermelon", "Pineapple", "Mango", "Peach"],
-      "Vegetables" => ["Carrot", "Broccoli", "Spinach", "Kale", "Cucumber", "Tomato", "Bell Pepper", "Onion", "Garlic", "Potato"],
-      "Grains" => ["Brown Rice", "White Rice", "Quinoa", "Oats", "Barley", "Whole Wheat Bread", "Pasta", "Couscous", "Bulgur", "Rye Bread"],
-      "Protein" => ["Chicken Breast", "Ground Beef", "Salmon", "Tuna", "Eggs", "Tofu", "Tempeh", "Black Beans", "Chickpeas", "Lentils"],
-      "Dairy" => ["Milk", "Yogurt", "Cheddar Cheese", "Mozzarella", "Cottage Cheese", "Greek Yogurt", "Butter", "Ice Cream", "Cream Cheese", "Sour Cream"],
-      "Oils & Fats" => ["Olive Oil", "Coconut Oil", "Avocado Oil", "Vegetable Oil", "Butter", "Ghee", "Lard", "Tallow", "Walnut Oil", "Sesame Oil"],
-      "Beverages" => ["Coffee", "Tea", "Orange Juice", "Apple Juice", "Smoothie", "Water", "Sparkling Water", "Kombucha", "Lemonade", "Soda"],
-      "Sweets & Desserts" => ["Chocolate Cake", "Ice Cream", "Cookie", "Brownie", "Pie", "Cupcake", "Donut", "Chocolate Bar", "Candy", "Cheesecake"]
+      "Fruits" => [ "Apple", "Banana", "Orange", "Strawberry", "Blueberry", "Raspberry", "Watermelon", "Pineapple", "Mango", "Peach" ],
+      "Vegetables" => [ "Carrot", "Broccoli", "Spinach", "Kale", "Cucumber", "Tomato", "Bell Pepper", "Onion", "Garlic", "Potato" ],
+      "Grains" => [ "Brown Rice", "White Rice", "Quinoa", "Oats", "Barley", "Whole Wheat Bread", "Pasta", "Couscous", "Bulgur", "Rye Bread" ],
+      "Protein" => [ "Chicken Breast", "Ground Beef", "Salmon", "Tuna", "Eggs", "Tofu", "Tempeh", "Black Beans", "Chickpeas", "Lentils" ],
+      "Dairy" => [ "Milk", "Yogurt", "Cheddar Cheese", "Mozzarella", "Cottage Cheese", "Greek Yogurt", "Butter", "Ice Cream", "Cream Cheese", "Sour Cream" ],
+      "Oils & Fats" => [ "Olive Oil", "Coconut Oil", "Avocado Oil", "Vegetable Oil", "Butter", "Ghee", "Lard", "Tallow", "Walnut Oil", "Sesame Oil" ],
+      "Beverages" => [ "Coffee", "Tea", "Orange Juice", "Apple Juice", "Smoothie", "Water", "Sparkling Water", "Kombucha", "Lemonade", "Soda" ],
+      "Sweets & Desserts" => [ "Chocolate Cake", "Ice Cream", "Cookie", "Brownie", "Pie", "Cupcake", "Donut", "Chocolate Bar", "Candy", "Cheesecake" ]
     }
 
     current_category_index = processed_foods % categories.length
@@ -211,7 +211,7 @@ if File.exist?(csv_path)
         protein_grams: rand(0.0..30.0).round(1),
         carbs_grams: rand(0.0..50.0).round(1),
         fat_grams: rand(0.0..20.0).round(1),
-        serving_size: ["1 cup", "100g", "1 tbsp", "1 oz", "1 serving"].sample,
+        serving_size: [ "1 cup", "100g", "1 tbsp", "1 oz", "1 serving" ].sample,
         food_category: category
       )
 
