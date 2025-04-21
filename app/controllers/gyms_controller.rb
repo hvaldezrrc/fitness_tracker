@@ -10,7 +10,7 @@ class GymsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = "Gym not found"
       redirect_to gyms_path
-      return
+      nil
     end
   end
 end
