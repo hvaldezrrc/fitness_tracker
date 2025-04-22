@@ -1,5 +1,4 @@
 class WorkoutsController < ApplicationController
-
   def index
     @workouts = Workout.includes(:user)
     @users = User.all

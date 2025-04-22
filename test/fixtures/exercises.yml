@@ -1,19 +1,19 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# test/fixtures/exercises.yml
 
 one:
-  name: MyString
-  exercise_type: MyString
-  target_muscle: MyString
-  equipment_needed: MyString
-  difficulty: MyString
-  instructions: MyText
-  image_url: MyString
+  name: Push Up
+  exercise_type: strength
+  target_muscle: chest
+  equipment_needed: body weight
+  difficulty: beginner
+  instructions: Get down on all fours, placing your hands slightly wider than your shoulders. Straighten your arms and legs. Lower your body until your chest nearly touches the floor. Pause, then push yourself back up.
+  image_url: https://via.placeholder.com/200x200.png?text=Push+Up
 
 two:
-  name: MyString
-  exercise_type: MyString
-  target_muscle: MyString
-  equipment_needed: MyString
-  difficulty: MyString
-  instructions: MyText
-  image_url: MyString
+  name: Squat
+  exercise_type: strength
+  target_muscle: legs
+  equipment_needed: body weight
+  difficulty: beginner
+  instructions: Stand with feet shoulder-width apart. Bend your knees and lower your body as if sitting back into a chair. Keep your chest up and knees behind your toes. Return to standing position.
+  image_url: https://via.placeholder.com/200x200.png?text=Squat
