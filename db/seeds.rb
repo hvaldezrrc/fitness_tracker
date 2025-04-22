@@ -238,7 +238,6 @@ end
 
 puts "Creating workouts and associating exercises..."
 User.all.each do |user|
-  # Each user gets 2-6 workouts
   (2..6).to_a.sample.times do
     workout = user.workouts.create!(
       name: [ "Morning Workout", "Cardio Day", "Strength Training", "Full Body", "Upper Body", "Lower Body" ].sample,
@@ -247,7 +246,6 @@ User.all.each do |user|
       notes: Faker::Lorem.paragraph(sentence_count: 2)
     )
 
-    # Each workout has 3-8 exercises
     exercises = Exercise.all.sample((3..8).to_a.sample)
     exercises.each do |exercise|
       if exercise.exercise_type.downcase == "strength"
@@ -272,9 +270,7 @@ User.all.each do |user|
 end
 
 puts "Creating meal logs and food entries..."
-# Create meal logs for users
 User.all.each do |user|
-  # Each user gets 3-7 meal logs
   (3..7).to_a.sample.times do
     meal_log = user.meal_logs.create!(
       date: Faker::Date.between(from: 14.days.ago, to: Date.today),
@@ -282,7 +278,6 @@ User.all.each do |user|
       notes: Faker::Lorem.sentence
     )
 
-    # Each meal has 1-5 foods
     foods = Food.all.sample((1..5).to_a.sample)
 
     foods.each do |food|
@@ -295,13 +290,10 @@ User.all.each do |user|
 end
 
 puts "Creating progress entries..."
-# Create progress entries for users
 User.all.each do |user|
-  # Each user gets 3-10 progress entries
   entry_dates = (1..10).to_a.sample(rand(3..10)).map { |n| n.days.ago.to_date }.sort
 
   entry_dates.each do |date|
-    # Slight weight variations for realistic tracking
     weight_variation = rand(-2.0..2.0).round(1)
 
     user.progress_entries.create!(
@@ -363,7 +355,9 @@ winnipeg_gyms = [
 
 puts "Creating Winnipeg gyms..."
 winnipeg_gyms.each do |gym_data|
-  Gym.create!(gym_data)
+  unless Gym.exists?(name: gym_data[:name])
+    Gym.create!(gym_data)
+  end
 end
 
 if Workout.any? && Gym.any?

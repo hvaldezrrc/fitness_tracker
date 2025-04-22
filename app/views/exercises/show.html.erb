@@ -7,9 +7,9 @@
   <p><strong>Difficulty:</strong><%= @exercise.difficulty %></p>
 
   <% if @exercise.image_url.present? %>
-  <p><strong>Demo Image:</strong><br>
-  <%= image_tag @exercise.image_url, alt: @exercise.name, style: "max-width:400px;", crossorigin: "anonymous", referrerpolicy: "no-referrer" %>
-  </p>
+    <p><strong>Demo Image:</strong><br>
+    <%= image_tag @exercise.image_url, alt: @exercise.name, style: "max-width:400px;", onerror: "this.onerror=null;this.src='https://via.placeholder.com/400x400.png?text=No+Image';" %>
+    </p>
   <% end %>
 
   <div>

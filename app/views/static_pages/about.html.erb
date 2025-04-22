@@ -1,111 +1,148 @@
-<h1>About Fitness Tracker</h1>
-
-<section>
-  <h2>Project Overview</h2>
-  <p>
-    Fitness Tracker is a web application designed to help users track their workouts, monitor nutritional
-    intake, and track progress toward their fitness goals. Users can browse exercises, log workouts,
-    record meals, and track their weight and other metrics over time.
-  </p>
-</section>
-
-<section>
-  <h2>Data Sources</h2>
-
-  <div>
-    <h3>ExerciseDB API</h3>
-    <p>Exercise data is sourced from the ExerciseDB API, which provides comprehensive information about various exercises including:</p>
-    <ul>
-      <li>Exercise name</li>
-      <li>Exercise type (strength, cardio, flexibility, etc.)</li>
-      <li>Target muscle group</li>
-      <li>Required equipment</li>
-      <li>Difficulty level</li>
-      <li>Instructions</li>
-      <li>Demo image/GIF URL</li>
-    </ul>
-    <p>
-      <strong>Source:</strong>
-      <a href="https://rapidapi.com/justin-WFnsXH_t6/api/exercisedb" target="_blank">
-        ExerciseDB API on RapidAPI
-      </a>
-    </p>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="mb-4">About Fitness Tracker</h1>
+    </div>
   </div>
 
-  <div>
-    <h3>Foundation Foods CSV</h3>
-    <p>Nutritional information is imported from the USDA Foundation Foods dataset, which includes:</p>
-    <ul>
-      <li>Food item name</li>
-      <li>Calorie content per serving</li>
-      <li>Protein content (grams)</li>
-      <li>Carbohydrate content (grams)</li>
-      <li>Fat content (grams)</li>
-      <li>Serving size information</li>
-      <li>Food category</li>
-    </ul>
-    <p>
-      <strong>Source:</strong>
-      <a href="https://fdc.nal.usda.gov/download-datasets" target="_blank">
-        USDA FoodData Central
-      </a>
-    </p>
+  <div class="row mb-5">
+    <div class="col-12">
+      <h2>Project Overview</h2>
+      <p class="lead">
+        Fitness Tracker is a web application designed to help users track their workouts, monitor nutritional
+        intake, and track progress toward their fitness goals.
+      </p>
+    </div>
   </div>
 
-  <div>
-    <h3>Faker Gem</h3>
-    <p>Generated user and workout data including:</p>
-    <ul>
-      <li>User profiles (name, age, height, weight, fitness level)</li>
-      <li>Workout logs (date, duration, exercises performed)</li>
-      <li>User fitness goals and progress tracking</li>
-    </ul>
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-3">Data Sources</h2>
+    </div>
   </div>
-</section>
 
-<section>
-  <h2>Database Structure</h2>
-  <p>The application utilizes the following database tables:</p>
-  <ul>
-    <li><strong>users</strong> - User profiles and details</li>
-    <li><strong>exercises</strong> - Exercise information and instructions</li>
-    <li><strong>workouts</strong> - Workout plans and logs</li>
-    <li><strong>workout_exercises</strong> - Join table connecting workouts and exercises</li>
-    <li><strong>foods</strong> - Nutritional information for food items</li>
-    <li><strong>food_categories</strong> - Categories for organizing food items</li>
-    <li><strong>meal_logs</strong> - User's food consumption records</li>
-    <li><strong>meal_foods</strong> - Join table connecting meals and foods</li>
-    <li><strong>progress_entries</strong> - User's progress tracking data</li>
-  </ul>
+  <div class="row mb-4">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h3 class="h5 mb-0">ExerciseDB API</h3>
+        </div>
+        <div class="card-body">
+          <p>Exercise data is sourced from the ExerciseDB API, which provides comprehensive information about various exercises including:</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Exercise name</li>
+            <li class="list-group-item">Exercise type (strength, cardio, flexibility, etc.)</li>
+            <li class="list-group-item">Target muscle group</li>
+            <li class="list-group-item">Required equipment</li>
+            <li class="list-group-item">Difficulty level</li>
+            <li class="list-group-item">Instructions</li>
+            <li class="list-group-item">Demo image/GIF URL</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Source: <a href="https://rapidapi.com/justin-WFnsXH_t6/api/exercisedb" target="_blank">ExerciseDB API</a></small>
+        </div>
+      </div>
+    </div>
 
-  <div>
-    <h3>Entity Relationship Diagram</h3>
-    <img src="<%= asset_path('fitness_tracker_erd.jpeg') %>" alt="Fitness Tracker ERD" style="max-width: 100%;">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white">
+          <h3 class="h5 mb-0">Foundation Foods CSV</h3>
+        </div>
+        <div class="card-body">
+          <p>Nutritional information is imported from the USDA Foundation Foods dataset, which includes:</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Food item name</li>
+            <li class="list-group-item">Calorie content per serving</li>
+            <li class="list-group-item">Protein content (grams)</li>
+            <li class="list-group-item">Carbohydrate content (grams)</li>
+            <li class="list-group-item">Fat content (grams)</li>
+            <li class="list-group-item">Serving size information</li>
+            <li class="list-group-item">Food category</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Source: <a href="https://fdc.nal.usda.gov/download-datasets.html" target="_blank">USDA FoodData Central</a></small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-info text-white">
+          <h3 class="h5 mb-0">Faker Gem</h3>
+        </div>
+        <div class="card-body">
+          <p>Generated user and workout data including:</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">User profiles (name, age, height, weight, fitness level)</li>
+            <li class="list-group-item">Workout logs (date, duration, exercises performed)</li>
+            <li class="list-group-item">User fitness goals and progress tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
 
-<section>
-  <h2>Data Integration Plan</h2>
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-3">Database Structure</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Table</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>users</strong></td>
+              <td>User profiles and details</td>
+            </tr>
+            <tr>
+              <td><strong>exercises</strong></td>
+              <td>Exercise information and instructions</td>
+            </tr>
+            <tr>
+              <td><strong>workouts</strong></td>
+              <td>Workout plans and logs</td>
+            </tr>
+            <tr>
+              <td><strong>workout_exercises</strong></td>
+              <td>Join table connecting workouts and exercises</td>
+            </tr>
+            <tr>
+              <td><strong>foods</strong></td>
+              <td>Nutritional information for food items</td>
+            </tr>
+            <tr>
+              <td><strong>food_categories</strong></td>
+              <td>Categories for organizing food items</td>
+            </tr>
+            <tr>
+              <td><strong>meal_logs</strong></td>
+              <td>User's food consumption records</td>
+            </tr>
+            <tr>
+              <td><strong>meal_foods</strong></td>
+              <td>Join table connecting meals and foods</td>
+            </tr>
+            <tr>
+              <td><strong>progress_entries</strong></td>
+              <td>User's progress tracking data</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-  <h4>Importing Exercise Data:</h4>
-  <ul>
-    <li>Pull exercise information from the ExerciseDB API</li>
-    <li>Create records in the exercises table</li>
-    <li>Categorize exercises by type and target muscle</li>
-  </ul>
-
-  <h4>Importing Nutritional Data:</h4>
-  <ul>
-    <li>Import food data from the CSV</li>
-    <li>Create records in the foods table</li>
-    <li>Categorize foods and create appropriate associations</li>
-  </ul>
-
-  <h4>Creating User and Workout Data:</h4>
-  <ul>
-    <li>Generate fake user profiles with Faker gem</li>
-    <li>Create sample workout routines and logs</li>
-    <li>Associate workouts with exercises through the join table</li>
-    <li>Generate meal logs and associate them with foods and users</li>
-  </ul>
-</section>
+  <div class="row">
+    <div class="col-12 text-center mb-5">
+      <h3>Entity Relationship Diagram</h3>
+      <img src="<%= asset_path('fitness_tracker_erd.jpeg') %>" alt="Fitness Tracker ERD" class="img-fluid border">
+    </div>
+  </div>
+</div>

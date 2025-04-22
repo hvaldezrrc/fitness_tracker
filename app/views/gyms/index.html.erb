@@ -1,39 +1,72 @@
-<h1>Winnipeg Gyms</h1>
+<div class="container">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1>Winnipeg Gyms</h1>
+    </div>
+  </div>
 
-<div id="map" style="width: 100%; height: 500px;"></div>
+  <div class="row mb-5">
+    <div class="col-12">
+      <div id="map" style="width: 100%; height: 400px;" class="border rounded"></div>
+    </div>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Address</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @gyms.each do |gym| %>
-      <tr>
-        <td><%= link_to gym.name, gym_path(gym) %></td>
-        <td><%= gym.address %></td>
-        <td><%= gym.description %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @gyms.each do |gym| %>
+              <tr>
+                <td><%= link_to gym.name, gym_path(gym) %></td>
+                <td><%= gym.address %></td>
+                <td><%= gym.phone %></td>
+                <td><%= truncate(gym.description, length: 100) %></td>
+                <td>
+                  <%= link_to "View Details", gym_path(gym), class: "btn btn-sm btn-outline-primary" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-  document.addEventListener("turbo:load", function() {
-    if (!document.getElementById("map")) return;
+  function initializeMap() {
+    if (typeof L !== 'undefined') {
+      const mapElement = document.getElementById('map');
+      if (!mapElement) return;
 
-    var map = L.map('map').setView([49.8951, -97.1384], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+      if (mapElement._leaflet_id) return;
 
-    <% @gyms.each do |gym| %>
-      L.marker([<%= gym.latitude %>, <%= gym.longitude %>])
-        .addTo(map)
-        .bindPopup("<strong><%= j gym.name %></strong><br><%= j gym.address %><br><a href='<%= gym_path(gym) %>'>View details</a>");
-    <% end %>
-  });
+      var map = L.map('map').setView([49.8566, -97.1600], 11);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      <% @gyms.each do |gym| %>
+        L.marker([<%= gym.latitude %>, <%= gym.longitude %>])
+          .addTo(map)
+          .bindPopup("<strong><%= gym.name %></strong><br><%= gym.address %><br><a href='<%= gym_path(gym) %>'>View details</a>");
+      <% end %>
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeMap);
+
+  document.addEventListener('turbo:load', initializeMap);
+  document.addEventListener('turbo:render', initializeMap);
 </script>

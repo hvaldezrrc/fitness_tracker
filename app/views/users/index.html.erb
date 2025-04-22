@@ -1,25 +1,52 @@
-<h1>Users</h1>
+<div class="container">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1>Users</h1>
+    </div>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Username</th>
-      <th>Fitness Level</th>
-      <th>Workouts</th>
-      <th>Meal Logs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= link_to user.username, user_path(user) %></td>
-        <td><%= user.fitness_level %></td>
-        <td><%= user.workouts.count %></td>
-        <td><%= user.meal_logs.count %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<div>
-  <%= paginate @users %>
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Username</th>
+              <th>Fitness Level</th>
+              <th>Age</th>
+              <th>Height</th>
+              <th>Weight</th>
+              <th>Workouts</th>
+              <th>Meal Logs</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td><%= link_to user.username, user_path(user) %></td>
+                <td><span class="badge <%= user.fitness_level == 'advanced' ? 'bg-success' : (user.fitness_level == 'intermediate' ? 'bg-primary' : 'bg-secondary') %>">
+                  <%= user.fitness_level %>
+                </span></td>
+                <td><%= user.age %></td>
+                <td><%= user.height_cm %> cm</td>
+                <td><%= user.weight_kg %> kg</td>
+                <td><span class="badge bg-info"><%= user.workouts.count %></span></td>
+                <td><span class="badge bg-info"><%= user.meal_logs.count %></span></td>
+                <td>
+                  <%= link_to "View Profile", user_path(user), class: "btn btn-sm btn-outline-primary" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <%= paginate @users %>
+    </div>
+  </div>
 </div>

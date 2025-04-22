@@ -1,6 +1,7 @@
 class GymsController < ApplicationController
   def index
-    @gyms = Gym.page(params[:page]).per(10)
+    gym_names = Gym.distinct.pluck(:name)
+    @gyms = gym_names.map { |name| Gym.where(name: name).first }
   end
 
   def show

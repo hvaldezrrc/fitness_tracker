@@ -1,50 +1,85 @@
-<h1>Workouts</h1>
+<div class="container">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1>Workouts</h1>
+    </div>
+  </div>
 
-<div class="search-form">
-  <%= form_with(url: workouts_path, method: :get, local: true) do |form| %>
-    <%= form.select :user_id,
-                    options_from_collection_for_select(@users, :id, :username, params[:user_id]),
-                    { include_blank: "All Users" },
-                    style: "padding: 8px; margin-right: 10px;" %>
-    <%= form.text_field :search, placeholder: "Search workouts by name...", value: params[:search] %>
-    <%= form.submit "Search" %>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with(url: workouts_path, method: :get, local: true, class: "row g-3") do |form| %>
+            <div class="col-md-5">
+              <%= form.select :user_id,
+                          options_from_collection_for_select(@users, :id, :username, params[:user_id]),
+                          { include_blank: "All Users" },
+                          class: "form-select" %>
+            </div>
+            <div class="col-md-5">
+              <%= form.text_field :search, placeholder: "Search workouts by name...", value: params[:search], class: "form-control" %>
+            </div>
+            <div class="col-md-2">
+              <%= form.submit "Search", class: "btn btn-primary w-100" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if params[:search].present? || params[:user_id].present? %>
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="alert alert-info">
+          <% if params[:user_id].present? && params[:user_id] != "" %>
+            <% selected_user = User.find_by(id: params[:user_id]) %>
+            <span class="fw-bold">User:</span> <%= selected_user&.username %>
+          <% end %>
+          <% if params[:search].present? %>
+            <% if params[:user_id].present? && params[:user_id] != "" %> | <% end %>
+            <span class="fw-bold">Searching for:</span> <%= params[:search] %>
+          <% end %>
+          <%= link_to "Clear all filters", workouts_path, class: "btn btn-sm btn-outline-secondary ms-3" %>
+        </div>
+      </div>
+    </div>
   <% end %>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>User</th>
+              <th>Date</th>
+              <th>Duration</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @workouts.each do |workout| %>
+              <tr>
+                <td><%= link_to workout.name, workout_path(workout) %></td>
+                <td><%= workout.user.username %></td>
+                <td><%= workout.date %></td>
+                <td><%= workout.duration_minutes %> minutes</td>
+                <td>
+                  <%= link_to "View", workout_path(workout), class: "btn btn-sm btn-outline-primary" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <%= paginate @workouts %>
+    </div>
+  </div>
 </div>
-
-<% if params[:search].present? || params[:user_id].present? %>
-  <p>
-    <% if params[:user_id].present? && params[:user_id] != "" %>
-      <% selected_user = User.find_by(id: params[:user_id]) %>
-      User: <strong><%= selected_user&.username %></strong>
-    <% end %>
-    <% if params[:search].present? %>
-      | Searching for: <strong><%= params[:search] %></strong>
-    <% end %>
-    <%= link_to "Clear all filters", workouts_path %>
-  </p>
-<% end %>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>User</th>
-      <th>Date</th>
-      <th>Duration</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @workouts.each do |workout| %>
-      <tr>
-        <td><%= link_to workout.name, workout_path(workout) %></td>
-        <td><%= workout.user.username %></td>
-        <td><%= workout.date %></td>
-        <td><%= workout.duration_minutes %> minutes</td>
-        <td><%= link_to "View", workout_path(workout) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= paginate @workouts %>

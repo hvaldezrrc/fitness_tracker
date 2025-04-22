@@ -8,3 +8,11 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ /* Import Bootstrap */
+@import "bootstrap";
+
+/* Custom styles */
+.search-form {
+  margin: 20px 0;
+}
