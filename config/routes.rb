@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :users, only: [ :index, :show ]
   resources :workouts, only: [ :show ]
   resources :gyms, only: [ :index, :show ]
+  resources :workouts, only: [:index, :show]
 
   get "home", to: "static_pages#home"
   get "about", to: "static_pages#about"

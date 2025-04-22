@@ -2,15 +2,24 @@
 
 <div class="search-form">
   <%= form_with(url: exercises_path, method: :get, local: true) do |form| %>
+    <%= form.select :equipment,
+                    options_for_select(@equipment_list, params[:equipment]),
+                    { include_blank: "All Equipment" },
+                    style: "padding: 8px; margin-right: 10px;" %>
     <%= form.text_field :search, placeholder: "Search by name, muscle group or type...", value: params[:search] %>
     <%= form.submit "Search" %>
   <% end %>
 </div>
 
-<% if params[:search].present? %>
+<% if params[:search].present? || params[:equipment].present? %>
   <p>
-    Showing results for: <strong><%= params[:search] %></strong>
-    <%= link_to "Clear search", exercises_path %>
+    <% if params[:equipment].present? && params[:equipment] != "" %>
+      Equipment: <strong><%= params[:equipment] %></strong>
+    <% end %>
+    <% if params[:search].present? %>
+      | Searching for: <strong><%= params[:search] %></strong>
+    <% end %>
+    <%= link_to "Clear all filters", exercises_path %>
   </p>
 <% end %>
 

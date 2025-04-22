@@ -2,15 +2,25 @@
 
 <div class="search-form">
   <%= form_with(url: foods_path, method: :get, local: true) do |form| %>
+    <%= form.select :category_id,
+                    options_from_collection_for_select(@food_categories, :id, :name, params[:category_id]),
+                    { include_blank: "All Categories" },
+                    style: "padding: 8px; margin-right: 10px;" %>
     <%= form.text_field :search, placeholder: "Search foods by name...", value: params[:search] %>
     <%= form.submit "Search" %>
   <% end %>
 </div>
 
-<% if params[:search].present? %>
+<% if params[:search].present? || params[:category_id].present? %>
   <p>
-    Showing results for: <strong><%= params[:search] %></strong>
-    <%= link_to "Clear search", foods_path %>
+    <% if params[:category_id].present? && params[:category_id] != "" %>
+      <% selected_category = FoodCategory.find_by(id: params[:category_id]) %>
+      Filtering by category: <strong><%= selected_category&.name %></strong>
+    <% end %>
+    <% if params[:search].present? %>
+      | Searching for: <strong><%= params[:search] %></strong>
+    <% end %>
+    <%= link_to "Clear all filters", foods_path %>
   </p>
 <% end %>
 

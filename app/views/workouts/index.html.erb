@@ -1,0 +1,50 @@
+<h1>Workouts</h1>
+
+<div class="search-form">
+  <%= form_with(url: workouts_path, method: :get, local: true) do |form| %>
+    <%= form.select :user_id,
+                    options_from_collection_for_select(@users, :id, :username, params[:user_id]),
+                    { include_blank: "All Users" },
+                    style: "padding: 8px; margin-right: 10px;" %>
+    <%= form.text_field :search, placeholder: "Search workouts by name...", value: params[:search] %>
+    <%= form.submit "Search" %>
+  <% end %>
+</div>
+
+<% if params[:search].present? || params[:user_id].present? %>
+  <p>
+    <% if params[:user_id].present? && params[:user_id] != "" %>
+      <% selected_user = User.find_by(id: params[:user_id]) %>
+      User: <strong><%= selected_user&.username %></strong>
+    <% end %>
+    <% if params[:search].present? %>
+      | Searching for: <strong><%= params[:search] %></strong>
+    <% end %>
+    <%= link_to "Clear all filters", workouts_path %>
+  </p>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>User</th>
+      <th>Date</th>
+      <th>Duration</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @workouts.each do |workout| %>
+      <tr>
+        <td><%= link_to workout.name, workout_path(workout) %></td>
+        <td><%= workout.user.username %></td>
+        <td><%= workout.date %></td>
+        <td><%= workout.duration_minutes %> minutes</td>
+        <td><%= link_to "View", workout_path(workout) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @workouts %>
